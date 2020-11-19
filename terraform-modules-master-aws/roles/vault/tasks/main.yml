@@ -1,0 +1,38 @@
+---
+- name: "Template Vault Configuration"
+  template:
+    src: "{{ role_path }}/files/config/override.hcl"
+    dest: "/opt/vault/config/override.hcl"
+  become: yes
+- name: Vault TLS Certificate
+  block:
+  - name: Make directory if not exist
+    file:
+      path: "{{ item | dirname }}"
+      state: directory
+    with_items:
+      - "{{ tls_cert_file_dest }}"
+      - "{{ encrypted_tls_key_file_dest }}"
+      - "{{ encrypted_aes_key_dest }}"
+      - "{{ cli_json_dest }}"
+    become: yes
+  - name: Copy files over
+    copy:
+      src: "{{ item.src }}"
+      dest: "{{ item.dest }}"
+    with_items:
+      - src: "{{ tls_cert_file_src }}"
+        dest: "{{ tls_cert_file_dest }}"
+      - src: "{{ encrypted_tls_key_file_src }}"
+        dest: "{{ encrypted_tls_key_file_dest }}"
+      - src: "{{ encrypted_aes_key_src }}"
+        dest: "{{ encrypted_aes_key_dest }}"
+      - src: "{{ cli_json_src }}"
+        dest: "{{ cli_json_dest }}"
+    become: yes
+- name: Install Configuration Script
+  copy:
+    src: "{{ role_path }}/files/configure.sh"
+    dest: "/opt/vault/bin/configure"
+    mode: 0755
+  become: yes
