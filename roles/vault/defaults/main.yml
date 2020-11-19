@@ -1,0 +1,14 @@
+---
+vault_ui_enable: "true"
+
+tls_cert_file_src: "{{ playbook_dir }}/cert/cert.pem"
+tls_cert_file_dest: "/opt/vault/tls/vault.crt"
+
+encrypted_tls_key_file_src: "{{ playbook_dir }}/cert/encrypted_vault.key"
+encrypted_tls_key_file_dest: "/opt/vault/tls/vault.encrypted.key"
+
+encrypted_aes_key_src: "{{ playbook_dir }}/cert/aes.key"
+encrypted_aes_key_dest: "/opt/aes-kms/keys/aes.encrypted.key"
+
+cli_json_src: "{{ playbook_dir }}/cert/cli.json"
+cli_json_dest:  "/opt/aes-kms/keys/cli.json"

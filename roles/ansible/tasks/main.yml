@@ -1,0 +1,16 @@
+---
+- name: Install dependencies
+  apt:
+    name:
+      - "libssl-dev"
+      - "software-properties-common"
+    state: latest
+  become: yes
+# Ansible needs cryptography>=2.5 and it does not naturally resolve
+- name: Install Ansible via Pip
+  pip:
+    name:
+      - "ansible=={{ ansible_install_version }}"
+      - "cryptography~=2.5.0"
+    state: present
+  become: yes
